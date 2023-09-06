@@ -1,13 +1,15 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 class Program
 {
     
     static void Main(string[] args)
     {
+
         if (args.Length == 3)
         {
-            //string filePath = @"C:\Temp\test2.csv";
             string filePath = args[0];
 
             string errorString = "";
@@ -38,7 +40,47 @@ class Program
                             list.Add(item);
                         }
 
-                        Console.WriteLine(string.Join(", ", list));
+                        //Console.WriteLine(string.Join(", ", list));
+                        if (args[1].ToLower() == "alpha")
+                        {
+                            if (args[2].ToLower() == "ascending")
+                            {                             
+                                Console.WriteLine(string.Join(", ", getAlphaAscendingOrder(getAlphaListValues(list))));
+                                Debug.WriteLine(string.Join(", ", getAlphaAscendingOrder(getAlphaListValues(list))));
+                            }
+                            else
+                            {
+                                Console.WriteLine(string.Join(", ", getAlphaDescendingOrder(getAlphaListValues(list))));
+                                Debug.WriteLine(string.Join(", ", getAlphaDescendingOrder(getAlphaListValues(list))));
+                            }
+                        }
+                        else if (args[1].ToLower() == "numeric")
+                        {
+                            if (args[2].ToLower() == "ascending")
+                            {
+                                Console.WriteLine(string.Join(", ", getNumericAscendingOrder(getNumericListValues(list))));
+                                Debug.WriteLine(string.Join(", ", getNumericAscendingOrder(getNumericListValues(list))));
+                            }
+                            else
+                            {
+                                Console.WriteLine(string.Join(", ", getNumericDescendingOrder(getNumericListValues(list))));
+                                Debug.WriteLine(string.Join(", ", getNumericDescendingOrder(getNumericListValues(list))));
+                            }
+                        }
+                        else
+                        {
+                            if (args[2].ToLower() == "ascending")
+                            {
+                                Console.WriteLine(string.Join(", ", getNumericAscendingOrder(getNumericListValues(list))) + ", " + string.Join(", ", getAlphaAscendingOrder(getAlphaListValues(list))));
+                                Debug.WriteLine(string.Join(", ", getNumericAscendingOrder(getNumericListValues(list))) + ", " + string.Join(", ", getAlphaAscendingOrder(getAlphaListValues(list))));
+
+                            }
+                            else
+                            {
+                                Console.WriteLine(string.Join(", ", getNumericDescendingOrder(getNumericListValues(list))) + ", " + string.Join(", ", getAlphaDescendingOrder(getAlphaListValues(list))));
+                                Debug.WriteLine(string.Join(", ", getNumericDescendingOrder(getNumericListValues(list))) + ", " + string.Join(", ", getAlphaDescendingOrder(getAlphaListValues(list))));
+                            }
+                        }
                     }
                 }
             }
@@ -51,7 +93,7 @@ class Program
         {
             Console.WriteLine("This application must be given exactly three parameters: \n - the full file path of the CSV file (ex. C:\\temp\\test.csv) \n - the type of sorted values to be returned (alpha, numeric, both) \n - the sort order (ascending or descending)");
         }
-        
+
     }
 
     public static bool IsNumeric(object Expression)
@@ -85,7 +127,7 @@ class Program
 
         foreach (object obj in list)
         {
-            if (@IsNumeric(obj))
+            if (!IsNumeric(obj))
             {
                 alphaObjectList.Add(obj);
             }
@@ -94,16 +136,30 @@ class Program
     }
   
 
-    private static void getAscendingOrder(List<string> list)
+    private static List<string> getNumericAscendingOrder(List<string> list)
     {
-        list.Sort((a, b) => a.CompareTo(b));
-        Console.WriteLine(string.Join(", ", list));
+        list.Sort((a, b) => Double.Parse(a).CompareTo(Double.Parse(b)));       
+        return list;
     }
 
-    private static void getDescendingOrder(List<string> list)
+    private static List<string> getNumericDescendingOrder(List<string> list)
     {
-        list.Sort((a, b) => b.CompareTo(a));
-        Console.WriteLine(string.Join(", ", list));
+        list.Sort((a, b) => Double.Parse(b).CompareTo(Double.Parse(a)));
+        return list;
+    }
+
+    private static List<string> getAlphaAscendingOrder(List<string> list)
+    {
+        list.Sort((a, b) => a.Replace("'","").CompareTo(b.Replace("'", "")));
+        
+        return list;
+        //Console.WriteLine(string.Join(", ", list));
+    }
+
+    private static List<string> getAlphaDescendingOrder(List<string> list)
+    {
+        list.Sort((a, b) => b.Replace("'", "").CompareTo(a.Replace("'", "")));
+        return list;
     }
 
 }
