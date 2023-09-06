@@ -2,7 +2,7 @@
   "profiles": {
     "CSVSorter": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Temp\\test2.csv\" \"both\" \"ascending\""
+      "commandLineArgs": "\"C:\\Temp\\test2.csv\" \"both\" \"descending\""
     }
   }
 }
