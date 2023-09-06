@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 class Program
 {
@@ -150,15 +149,13 @@ class Program
 
     private static List<string> getAlphaAscendingOrder(List<string> list)
     {
-        list.Sort((a, b) => a.Replace("'","").CompareTo(b.Replace("'", "")));
-        
+        list.Sort((a, b) => a.Replace("'","").Replace("\"", "").CompareTo(b.Replace("'", "").Replace("\"", "")));        
         return list;
-        //Console.WriteLine(string.Join(", ", list));
     }
 
     private static List<string> getAlphaDescendingOrder(List<string> list)
     {
-        list.Sort((a, b) => b.Replace("'", "").CompareTo(a.Replace("'", "")));
+        list.Sort((a, b) => b.Replace("'", "").Replace("\"", "").CompareTo(a.Replace("'", "").Replace("\"", "")));
         return list;
     }
 
