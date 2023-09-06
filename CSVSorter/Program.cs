@@ -46,7 +46,11 @@ class Program
             {
                 Console.WriteLine(errorString);
             }
-        }             
+        }
+        else
+        {
+            Console.WriteLine("This application must be given exactly three parameters: \n - the full file path of the CSV file (ex. C:\\temp\\test.csv) \n - the type of sorted values to be returned (alpha, numeric, both) \n - the sort order (ascending or descending)");
+        }
         
     }
 
